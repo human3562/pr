@@ -1,6 +1,8 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <iostream>
 #include <ctime> // для генеирования псевдо-случайных чисел в задании №9
+#include <string> // для 23
+#include <vector> // для 28
 //#include <math.h>
 
 using namespace std;
@@ -47,8 +49,9 @@ void task4() {
 	
 	//с использованием третьей переменной
 
+	int t = a;
 	a = b;
-	b = a;
+	b = t;
 	std::cout << a << " " << b << std::endl;
 
 	//без использования третьей переменной
@@ -66,8 +69,8 @@ void task5() {
 	const double g = -9.8;
 	std::cout << "Введите начальную высоту, начальную скорость, и время падения." << std::endl;
 	std::cin >> x0 >> v0 >> t;
-	double x = g * t * t / 2; // в данном случае выражение делит на два только второ
-	double x1 = (1.0 / 2.0) * g * t * t; // в данном случае выражение тоже неверно
+	double x = g * t * t / 2; 
+	double x1 = (1.0 / 2.0) * g * t * t;
 	double x2 = (g*t*t) / 2;
 	//std::cout << "за время t = " << t << ", падая с начальной высоты x0 = " << x0 << "с c начальной скоростью v0 = " << v0 << " тело окажется на координате x = " << x << std::endl;
 	std::cout << x << " " << x1 << " " << x2 << std::endl;
@@ -80,8 +83,9 @@ void task6() {
 	std::cin >> a >> b >> c;
 	
 	double D = b * b - 4 * a * c;
-	
-	if (D < 0) {
+
+	if (a == 0 && b != 0) { cout << "x = -1"; }
+	else if (D < 0) {
 		std::cout << "Нет корней" << std::endl;
 	} else if(D!=0){
 		double x1 = (-b + sqrt(D)) / (2 * a);
@@ -95,6 +99,7 @@ void task6() {
 	}
 }
 
+
 void task7() {
 	int option = 0;
 	double S = 0;
@@ -104,13 +109,20 @@ void task7() {
 	std::cin >>  option;
 
 	switch (option) {
+
 	case 1:
 		double a, b, c;
 		std::cout << "Введите через пробел длины сторон треугольника" << std::endl;
 		std::cin >> a >> b >> c;
-		p = 0.5 * (a + b + c); //по формуле Герона
-		S = sqrt(p * (p-a) * (p-b) * (p-c));
-		std::cout << "S = " << S << std::endl;
+
+		if (a + b > c && b + c > a && c + a > b) {
+			p = 0.5 * (a + b + c); //по формуле Герона
+			S = sqrt(p * (p - a) * (p - b) * (p - c));
+			std::cout << "S = " << S << std::endl;
+		}
+		else {
+			cout << "Введенный треугольник не существует." << endl;
+		}
 		break;
 
 	case 2:
@@ -122,22 +134,27 @@ void task7() {
 		break;
 
 	default:
-		std::cout << "выберите число 1(расчет по длинам сторон) или 2(расчет по координатам вершин)" << std::endl;
+		std::cout << "Выбран неверный метод решения." << std::endl;
 		break;
 	}
 
 }
+//сдано
 
 void task8() {
 	double a, b, result;
-	char op;
-
+	char op;  //char хранит в себе один символ в определенной кодировке
+	op = '#';
 	std::cin >> a >> op >> b;
 	
 	switch (op) {
 	case '+':
 		result = a + b;
 		std::cout << result << std::endl;
+		break;
+
+	default:
+		std::cout << "Неверный оператор" << std::endl;
 		break;
 
 	case '-':
@@ -151,15 +168,17 @@ void task8() {
 		break;
 
 	case '/':
-		result = a / b;
-		std::cout << result << std::endl;
+		if (b != 0) {
+			result = a / b;
+			std::cout << result << std::endl;
+		}
+		else cout << "Деление на ноль" << endl;
 		break;
 
-	default:
-		std::cout << "Неверный оператор" << std::endl;
-		break;
+
 	}
 }
+//сдано
 
 void task9() {
 	int n;
@@ -220,15 +239,21 @@ void task9() {
 //сдано
 
 void task10() {
-	int n, p;
+	double n; int p;
 	std::cout << "Введите число и степень в которую нужно его ввести." << std::endl;
 	std::cin >> n >> p;
-	int res = n;
-	for (int i = 0; i < p-1; i++) {
+	double res = n;
+	for (int i = 0; i < abs(p)-1; i++) {
 		res *= n;
 	}
-	std::cout << "Ответ: " << res << std::endl;
+	if (p < 0 && n == 0) cout << "Деление на ноль" << endl;
+	else{
+	if (p == 0) res = 1;
+	if (p < 0) res = 1 / res;
+	cout << "Ответ: " << res << endl;
+	}
 }
+//сдано
 
 void task11() {
 	int n;
@@ -238,8 +263,11 @@ void task11() {
 	for (int i = 1; i < n; i++) {
 		res *= i;
 	}
+	if (n == 0) cout << "1"; 
+	else
 	std::cout << res << std::endl;
 }
+//сдано
 
 void task12() {
 	int n;
@@ -256,7 +284,6 @@ void task12() {
 	cout << "Введенное число простое." << endl;
 	
 }
-//сдано
 
 void task13() {
 	int n;
@@ -267,6 +294,7 @@ void task13() {
 		k++;
 	cout << "Количество степеней двойки в введенном числе: \n" << k << endl;
 }
+//сдано
 
 void task14() {
 	int s;
@@ -345,16 +373,24 @@ void task15() {
 
 //task 16
 void factorization(int n) {
-	
+	int count1 = 0;
 	while (n % 2 == 0) {
-		cout << 2 << "*";
+		//cout << 2 << "*";
 		n = n / 2;
+		count1++;
 	}
-	for (int i = 3; i < sqrt(n); i += 2) {
+	if (count1 > 1) cout << 2 << "^" << count1;
+	else if(count1>0) cout << 2 << "*";
+	for (int i = 3; i <= sqrt(n); i += 1) {
+		int count2 = 0;
+		int num2 = 0;
 		while (n % i == 0) {
-			cout << i << "*";
+			//cout << i << "*";
+			num2 = i;
 			n = n / i;
+			count2++;
 		}
+		if(num2 > 0 && count2 > 0) cout << num2 << "^" << count2 << "*";
 	}
 	if (n > 2) cout << n << " ";
 }
@@ -366,7 +402,7 @@ void task16() {
 
 //task 17
 double BMI(double weight, double height) {
-	return(weight / ((height / 100)*(height / 100)));
+	return(weight / ((height)*(height)));
 }
 void printBMI(double BMI) {
 	//sqcout << BMI << endl;
@@ -383,8 +419,9 @@ void printBMI(double BMI) {
 void task17() {
 	double height, weight;
 	cin >> weight >> height;
-	printBMI(BMI(weight, height));
+	printBMI(BMI(weight, height/100));
 }
+//сдано
 
 void task18() {
 	srand(unsigned(time(0)));
@@ -407,13 +444,14 @@ void task18() {
 void task19() {
 	int n;
 	cin >> n;
-	int *a = new int[n];
-	int amt[10];
-	for (int i = 0; i < n; i++) cin >> a[i];
-	for (int i = 0; i < 10; i++) amt[i] = 0;
+	int amt[10] = {};
+	
+	
 
 	for (int i = 0; i < n; i++) {
-		amt[a[i]]++;
+		int a;
+		cin >> a;
+		amt[a]++;
 	}
 
 	for (int i = 0; i < 10; i++) {
@@ -421,10 +459,10 @@ void task19() {
 			cout << i << ": " << amt[i] << endl;
 		}
 	}
-	delete[] a;
 }
+//сдано
 
-//task 20
+//task 20 
 void bubble(int *a, int len) {
 	for (int i = 0; i < len; i++) { //сортировка пузырьком
 		for (int j = 0; j < len - i - 1; j++) {
@@ -466,25 +504,302 @@ void task21() {
 	while (!win) {
 		int gi, gj;
 		cin >> gi >> gj;
-		if (M[gi][gj] > 0) {
-			cout << "Вы угадали!" << endl;
-			win = true;
-		}
-		else if (M[gi][gj] < 0) {
-			cout << "Этот уже проверяли." << endl;
-		}
-		else if (M[gi][gj] == 0) {
-			cout << "Нет" << endl;
-			M[gi][gj] = -1;
-			tries++;
-		}
-		if (tries > 5) {
-			cout << "GAME OVER.";
-			break;
+		if (gi < 10 && gj < 8 && gi > 0 && gj > 0) {
+			if (M[gi][gj] > 0) {
+				cout << "Вы угадали!" << endl;
+				win = true;
+			}
+			else if (M[gi][gj] < 0) {
+				cout << "Этот уже проверяли." << endl;
+			}
+			else if (M[gi][gj] == 0) {
+				cout << "Нет" << endl;
+				M[gi][gj] = -1;
+				tries++;
+			}
+			if (tries > 5) {
+				cout << "GAME OVER.";
+				break;
+			}
 		}
 	}
 
 }
+
+
+//task22 //сдано
+void swap(int*, int*);		//Прототипы требуемых функций
+int msort(int*, int*, int*);
+void info(const int*);
+int* add(int*, const int*);
+void task22() {
+	int a = 5;
+	int b = 2;
+	cout << a << " " << b << endl;
+	swap(&a, &b);
+	cout << a << " " << b << endl;
+}
+//Сами функции
+void swap(int* a, int* b) {
+	int t = *a;
+	*a = *b;
+	*b = t;
+}
+int msort(int* n1, int* n2, int* n3) {
+	if (*n1 > *n2) swap(n1, n2);
+	if (*n2 > *n3) swap(n2, n3);
+	if (*n1 > *n2) swap(n1, n2);
+	return *n3;
+}
+void info(const int* n) {
+	cout << "Адрес: " << n << endl;
+	cout << "Значение: " << *n << endl;
+}
+int* add(int* a, const int* b) {
+	*a = *a + *b;
+	return a;
+}
+
+
+//task23
+bool check_palindrom(string word)
+{
+	if (!word.empty()) {
+		int len = word.length();
+		for (int i = 0; i < len / 2; ++i)
+		{
+			if (word[i] != word[len - i - 1])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	else return false;
+}
+void task23() {
+	string str;
+	string fex;
+	cout << "Введите слово: ";
+	getline(cin, str);
+	for (int i = 0; i < str.length(); i++) {
+		if (str[i] >= 65 && str[i] <= 90) {
+			str[i] = str[i] + 32;
+		}
+		if ((str[i] >= 48 && str[i] <= 57) || (str[i] >= 97 && str[i] <= 122)) {
+			fex += str[i];
+		}
+	}
+	if (check_palindrom(fex))
+		cout << "Палиндром\n";
+	else
+		cout << "Не палиндром\n";
+}
+
+
+//task24
+size_t mystrlen(const char* string) {
+	int len = 0;
+	int i = 0;
+	while (string[i] != '\0') {
+		len++;
+		i++;
+	}
+	return len;
+}
+
+int mystrcmp(const char* string1, const char* string2) {
+	int i = -1;
+	while (string1[i] != '\0' && string2[i] != '\0')
+	{
+		i++;
+		if (string1[i] > string2[i]) { cout << "Строка 1 больше строки 2" << endl; break; }
+		if (string1[i] < string2[i]) { cout << "Строка 2 больше строки 1" << endl; break; }
+		if (string1[i] == string2[i]) { cout << "Строки равны" << endl; break; }
+	}
+	return 0;
+}
+
+char* mystrstr(char* string1, const char* string2) {
+	for (int i = 0; i < mystrlen(string1); i++)
+	{
+		int l = 0;
+		if (string1[i] == string2[l])
+		{
+			int k = 1;
+			l++;
+
+			while ((string1[i + l] == string2[l]) && (l < mystrlen(string2))) {
+				k++;
+				l++;
+			}
+			if (k == mystrlen(string2)) {
+				return &string1[i];
+			}
+		}
+	}
+	return nullptr;
+}
+
+char* mystrcat(char* destptr, const char* srcptr) {
+	int len = mystrlen(destptr);
+	for (int i = 0; i < mystrlen(srcptr); i++)
+		destptr[len + i] = srcptr[i];
+	destptr[len + mystrlen(srcptr)] = '\0';
+	return destptr;
+}
+
+void task24()
+{
+	char input1[51];
+	char input2[51];
+
+	cin.getline(input1, 51, '\n');
+	cin.getline(input2, 51, '\n');
+	cout << mystrlen(input1) << " " << mystrlen(input2) << '\n';
+	mystrcmp(input1, input2);
+
+	int i = 0;
+	if (mystrstr(input1, input2)) while (&input1[i] != mystrstr(input1, input2)) i++;
+	else i = -1;
+	cout << i << endl;
+
+	cout << mystrcat(input1, input2);
+
+}
+
+//task25
+struct Student {
+	char name[100];
+	int group;
+	int sec[5];
+};
+void task25() {
+	Student students[] = {
+		{"Denisenko V.A.",2,{3,4,3,5,4}},
+		{"Lagutkin A.A.",1,{1,1,2,1,3}},
+		{"Fedorov A.A.",1,{2,1,2,3,3}},
+		{"Evpak D.A.",1,{5,5,5,5,5}},
+		{"Ivanov A.F.",2,{5,3,4,4,4}},
+		{"Petrov S.A.",1,{3,3,3,2,5}},
+		{"Lashuk F.F.",2,{5,4,3,3,3}},
+		{"Filipenko D.I.",3,{4,5,4,5,3}},
+		{"Moskalenko O.V.",1,{2,2,2,1,1}},
+		{"Kuripko O.V.",3,{4,5,4,5,3}}
+	};
+	
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 5; j++) {
+			if (students[i].sec[j] < 3) {
+
+			}
+		}
+	}
+
+}
+
+//task 28 //сдано
+enum Order {
+	ASC,
+	DESC
+};
+bool inOrder(int *m, int s, Order ord) { //проверка упорядоченности для обычного массива интов, а также для трех отдельных чисел
+
+	if (ord == ASC) 
+		for (int i = 1; i < s; i++) 
+				if (m[i] <= m[i - 1]) return false;
+	
+	if (ord == DESC) 
+		for (int i = 1; i < s; i++)
+			if (m[i] >= m[i - 1]) return false;
+	
+	return true;
+}
+bool inOrder(std::vector<int> m, int s, Order ord) { //проверка упорядоченности для std::vector
+
+	if (ord == ASC)
+		for (int i = 1; i < s; i++)
+			if (m[i] <= m[i - 1]) return false;
+
+	if (ord == DESC)
+		for (int i = 1; i < s; i++)
+			if (m[i] >= m[i - 1]) return false;
+
+	return true;
+}
+void BozoSort(int *m, int s, Order ord = ASC) { // Обычный массив интов
+	while (!inOrder(m, s, ord)) {
+		int s1 = rand() % s;
+		int s2 = rand() % s;
+		if (s1 == s2) s2 /= 2;
+
+		int t = m[s2];
+		m[s2] = m[s1];
+		m[s1] = t;
+	}
+	for (int i = 0; i < s; i++) {
+		cout << m[i] << " ";
+	}
+	cout << endl;
+}
+void BozoSort(std::vector<int> m, int s, Order ord = ASC) { // std::vector
+	while (!inOrder(m, s, ord)) {
+		int s1 = rand() % s;
+		int s2 = rand() % s;
+		if (s1 == s2) s2 /= 2;
+
+		int t = m[s2];
+		m[s2] = m[s1];
+		m[s1] = t;
+	}
+	for (int i = 0; i < s; i++) {
+		cout << m[i] << " ";
+	}
+	cout << endl;
+}
+void BozoSort(int a, int b, int c, Order ord = ASC) { // три отдельных числа
+	int m[3] = { a,b,c };
+	while (!inOrder(m, 3, ord)) {
+		int s1 = rand() % 3;
+		int s2 = rand() % 3;
+		if (s1 == s2) s2 /= 2;
+
+		int t = m[s2];
+		m[s2] = m[s1];
+		m[s1] = t;
+	}
+	for (int i = 0; i < 3; i++) {
+		cout << m[i] << " ";
+	}
+	cout << endl;
+}
+void task28() {
+	srand(unsigned(time(0)));
+	int s;
+	cin >> s;
+
+	int *m = new int[s];
+	std::vector<int> vm(s);
+
+	for (int i = 0; i < s; i++) {
+		cin >> m[i];
+		vm[i] = m[i];
+	}
+
+	cout << endl;
+
+	BozoSort(m, s);
+	BozoSort(m, s, DESC);
+	cout << endl;
+	BozoSort(vm, s);
+	BozoSort(vm, s, DESC);
+	cout << endl;
+	if (s == 3) {
+		BozoSort(m[0], m[1], m[2]);
+		BozoSort(m[0], m[1], m[2], DESC);
+	}
+}
+
 
 
 
@@ -492,7 +807,7 @@ int main()
 {
 	setlocale(LC_ALL, "Russian"); //решает проблему вывода текста на русском языке
 	
-	task1(); // Здесь обозначаем какое задание хотим запустить
+	task28(); // Здесь обозначаем задание которое хотим запустить
 	
 	return 0;
 }
